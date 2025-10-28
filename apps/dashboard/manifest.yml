@@ -1,0 +1,9 @@
+---
+name: Dashboard
+description: |-
+  The MiniDemand Main Dashboard
+category: System
+icon: fa://tachometer-alt
+role: dashboard
+url: dashboard
+new_window: false

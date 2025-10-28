@@ -1,0 +1,11 @@
+{
+  "HTERM_BUTTON_PAGE_UP": "Page Up",
+  "HTERM_BUTTON_PAGE_DOWN": "Page Down",
+  "HTERM_OPTIONS_BUTTON_LABEL": "Options",
+  "HTERM_BUTTON_PREVIOUS": "Previous",
+  "HTERM_BUTTON_NEXT": "Next",
+  "HTERM_BUTTON_FIND": "Find",
+  "HTERM_BUTTON_CLOSE": "Close",
+  "HTERM_NOTIFY_COPY": "Copied to clipboard",
+  "HTERM_NOTIFY_PASTE": "Pasted from clipboard"
+}

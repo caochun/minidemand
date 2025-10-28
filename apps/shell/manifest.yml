@@ -1,0 +1,9 @@
+---
+name: Shell App
+description: |-
+  The MiniDemand Web Terminal
+category: Terminal
+icon: fa://terminal
+role: shell
+url: shell
+new_window: false

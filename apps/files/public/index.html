@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MiniDemand Files</title>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-left">
+                <h1><i class="fas fa-folder"></i> MiniDemand Files</h1>
+            </div>
+            <div class="header-right">
+                <button id="refresh-btn" class="btn btn-outline">
+                    <i class="fas fa-sync-alt"></i> 刷新
+                </button>
+                <button id="new-file-btn" class="btn btn-outline">
+                    <i class="fas fa-file-plus"></i> 新建文件
+                </button>
+                <button id="new-dir-btn" class="btn btn-outline">
+                    <i class="fas fa-folder-plus"></i> 新建文件夹
+                </button>
+                <button id="upload-btn" class="btn btn-outline">
+                    <i class="fas fa-upload"></i> 上传
+                </button>
+                <button id="download-btn" class="btn btn-outline">
+                    <i class="fas fa-download"></i> 下载
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-section">
+                    <h3><i class="fas fa-star"></i> 收藏夹</h3>
+                    <ul id="favorites-list" class="favorites-list">
+                        <li><a href="#" data-path="/Users/chun"><i class="fas fa-home"></i> 主目录</a></li>
+                        <li><a href="#" data-path="/Users/chun/Desktop"><i class="fas fa-desktop"></i> 桌面</a></li>
+                        <li><a href="#" data-path="/Users/chun/Documents"><i class="fas fa-file-alt"></i> 文档</a></li>
+                        <li><a href="#" data-path="/Users/chun/Downloads"><i class="fas fa-download"></i> 下载</a></li>
+                    </ul>
+                </div>
+                
+                <div class="sidebar-section">
+                    <h3><i class="fas fa-folder-tree"></i> 目录树</h3>
+                    <div id="directory-tree" class="directory-tree">
+                        <!-- Directory tree will be populated by JavaScript -->
+                    </div>
+                </div>
+            </aside>
+
+            <!-- File Browser -->
+            <main class="file-browser">
+                <!-- Breadcrumb -->
+                <nav class="breadcrumb">
+                    <ol id="breadcrumb-list" class="breadcrumb-list">
+                        <li><a href="#" data-path="/Users/chun"><i class="fas fa-home"></i></a></li>
+                    </ol>
+                </nav>
+
+                <!-- Toolbar -->
+                <div class="toolbar">
+                    <div class="toolbar-left">
+                        <button id="back-btn" class="btn btn-sm" disabled>
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                        <button id="forward-btn" class="btn btn-sm" disabled>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                        <button id="up-btn" class="btn btn-sm">
+                            <i class="fas fa-arrow-up"></i>
+                        </button>
+                    </div>
+                    <div class="toolbar-right">
+                        <div class="view-controls">
+                            <button id="list-view-btn" class="btn btn-sm active">
+                                <i class="fas fa-list"></i>
+                            </button>
+                            <button id="grid-view-btn" class="btn btn-sm">
+                                <i class="fas fa-th"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- File List -->
+                <div class="file-list-container">
+                    <div id="file-list" class="file-list">
+                        <!-- Files will be populated by JavaScript -->
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="modal-overlay" class="modal-overlay hidden">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modal-title">Modal Title</h3>
+                <button id="modal-close" class="btn btn-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="modal-content">
+                    <!-- Modal content will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- File Upload Input -->
+    <input type="file" id="file-upload-input" multiple style="display: none;">
+
+    <!-- Scripts -->
+    <script src="js/files.js"></script>
+    <script>
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            const fileManager = new FileManager();
+            fileManager.init();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MiniDemand Dashboard</title>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-left">
+                <h1><i class="fas fa-tachometer-alt"></i> MiniDemand Dashboard</h1>
+            </div>
+            <div class="header-right">
+                <div class="status-indicator">
+                    <span class="status-dot"></span>
+                    <span class="status-text">系统运行正常</span>
+                </div>
+                <button id="refresh-btn" class="btn btn-outline">
+                    <i class="fas fa-sync-alt"></i> 刷新
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Welcome Section -->
+            <section class="welcome-section">
+                <div class="welcome-content">
+                    <h2>欢迎使用 MiniDemand</h2>
+                </div>
+            </section>
+
+            <!-- Apps Grid -->
+            <section class="apps-section">
+                <h3><i class="fas fa-th-large"></i> 可用应用</h3>
+                <div id="apps-grid" class="apps-grid">
+                    <!-- Apps will be populated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- System Info -->
+            <section class="system-info-section">
+                <h3><i class="fas fa-info-circle"></i> 系统信息</h3>
+                <div class="info-cards">
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-server"></i>
+                        </div>
+                        <div class="info-content">
+                            <h4>服务器状态</h4>
+                            <p id="server-status">检查中...</p>
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="info-content">
+                            <h4>运行时间</h4>
+                            <p id="uptime">计算中...</p>
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-code-branch"></i>
+                        </div>
+                        <div class="info-content">
+                            <h4>版本</h4>
+                            <p id="version">1.0.0</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/dashboard.js"></script>
+    <script>
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            const dashboard = new Dashboard();
+            dashboard.init();
+        });
+    </script>
+</body>
+</html>

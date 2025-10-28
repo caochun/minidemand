@@ -1,0 +1,9 @@
+---
+name: Files App
+description: |-
+  The MiniDemand File Manager
+category: Files
+icon: fa://folder
+role: files
+url: files
+new_window: false

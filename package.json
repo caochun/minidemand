@@ -1,0 +1,39 @@
+{
+  "name": "minidemand-v2",
+  "version": "1.0.0",
+  "description": "A lightweight Open OnDemand implementation with Web Terminal and File Manager",
+  "main": "scripts/start-all.sh",
+  "scripts": {
+    "start": "./scripts/start-all.sh start",
+    "stop": "./scripts/start-all.sh stop",
+    "restart": "./scripts/start-all.sh restart",
+    "status": "./scripts/start-all.sh status",
+    "logs": "./scripts/start-all.sh logs",
+    "install-deps": "cd apps/shell && npm install && cd ../files && npm install && cd ../dashboard && npm install",
+    "dev": "concurrently \"cd apps/shell && npm start\" \"cd apps/files && npm start\" \"cd apps/dashboard && npm start\""
+  },
+  "keywords": [
+    "ondemand",
+    "web-terminal",
+    "file-manager",
+    "dashboard",
+    "hpc",
+    "cluster"
+  ],
+  "author": "MiniDemand Team",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^7.6.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/caochun/minidemand.git"
+  },
+  "bugs": {
+    "url": "https://github.com/caochun/minidemand/issues"
+  },
+  "homepage": "https://github.com/caochun/minidemand#readme"
+}

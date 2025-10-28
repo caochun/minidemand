@@ -1,0 +1,10 @@
+---
+name: Job Composer
+description: |-
+  The MiniDemand HPC Job Management System
+category: Jobs
+icon: fa://magic
+role: jobs
+url: jobs
+new_window: false
+id: jobs

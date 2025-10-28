@@ -1,0 +1,31 @@
+apps:
+  shell:
+    name: "Shell App"
+    description: "Web Terminal Application"
+    category: "Terminal"
+    icon: "fa://terminal"
+    port: 3000
+    enabled: true
+    
+  files:
+    name: "Files App"
+    description: "File Manager Application"
+    category: "Files"
+    icon: "fa://folder"
+    port: 3001
+    enabled: true
+    
+  dashboard:
+    name: "Dashboard"
+    description: "Main Dashboard"
+    category: "System"
+    icon: "fa://tachometer-alt"
+    port: 3002
+    enabled: true
+
+settings:
+  default_app: "dashboard"
+  auto_start: true
+  log_level: "info"
+  max_file_size: "100MB"
+  allowed_extensions: [".txt", ".md", ".js", ".html", ".css", ".json", ".yml", ".yaml"]

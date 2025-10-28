@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MiniDemand Job Composer</title>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-left">
+                <h1><i class="fas fa-magic"></i> MiniDemand Job Composer</h1>
+            </div>
+            <div class="header-right">
+                <button id="refresh-btn" class="btn btn-outline">
+                    <i class="fas fa-sync-alt"></i> 刷新
+                </button>
+                <button id="new-job-btn" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> 新建作业
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-section">
+                    <h3><i class="fas fa-list"></i> 作业状态</h3>
+                    <div class="status-filters">
+                        <button class="filter-btn active" data-status="all">全部</button>
+                        <button class="filter-btn" data-status="pending">待提交</button>
+                        <button class="filter-btn" data-status="running">运行中</button>
+                        <button class="filter-btn" data-status="completed">已完成</button>
+                        <button class="filter-btn" data-status="failed">失败</button>
+                    </div>
+                </div>
+                
+                <div class="sidebar-section">
+                    <h3><i class="fas fa-cogs"></i> 作业模板</h3>
+                    <div class="template-actions">
+                        <button id="new-template-btn" class="btn btn-sm btn-primary">
+                            <i class="fas fa-plus"></i> 新建模板
+                        </button>
+                        <button id="manage-templates-btn" class="btn btn-sm btn-outline">
+                            <i class="fas fa-edit"></i> 管理
+                        </button>
+                    </div>
+                    <div id="templates-list" class="templates-list">
+                        <!-- Templates will be populated by JavaScript -->
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Job Management -->
+            <main class="job-management">
+                <!-- Job List -->
+                <section class="job-list-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-tasks"></i> 作业列表</h2>
+                        <div class="job-actions">
+                            <button id="submit-selected-btn" class="btn btn-success" disabled>
+                                <i class="fas fa-play"></i> 提交选中
+                            </button>
+                            <button id="cancel-selected-btn" class="btn btn-warning" disabled>
+                                <i class="fas fa-stop"></i> 取消选中
+                            </button>
+                            <button id="delete-selected-btn" class="btn btn-danger" disabled>
+                                <i class="fas fa-trash"></i> 删除选中
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="job-list" class="job-list">
+                        <!-- Jobs will be populated by JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Job Details -->
+                <section id="job-details" class="job-details hidden">
+                    <div class="section-header">
+                        <h2><i class="fas fa-info-circle"></i> 作业详情</h2>
+                        <button id="close-details-btn" class="btn btn-close">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="job-details-content">
+                        <div class="job-info">
+                            <div class="info-row">
+                                <label>作业名称:</label>
+                                <span id="job-name">-</span>
+                            </div>
+                            <div class="info-row">
+                                <label>状态:</label>
+                                <span id="job-status" class="status-badge">-</span>
+                            </div>
+                            <div class="info-row">
+                                <label>集群:</label>
+                                <span id="job-cluster">-</span>
+                            </div>
+                            <div class="info-row">
+                                <label>创建时间:</label>
+                                <span id="job-created">-</span>
+                            </div>
+                            <div class="info-row">
+                                <label>SLURM作业ID:</label>
+                                <span id="job-slurm-id">-</span>
+                            </div>
+                        </div>
+                        
+                        <div class="job-tabs">
+                            <button class="tab-btn active" data-tab="script">脚本</button>
+                            <button class="tab-btn" data-tab="logs">日志</button>
+                            <button class="tab-btn" data-tab="output">输出</button>
+                        </div>
+                        
+                        <div class="tab-content">
+                            <div id="script-tab" class="tab-pane active">
+                                <textarea id="job-script" readonly></textarea>
+                            </div>
+                            <div id="logs-tab" class="tab-pane">
+                                <pre id="job-logs"></pre>
+                            </div>
+                            <div id="output-tab" class="tab-pane">
+                                <pre id="job-output"></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- New Job Modal -->
+    <div id="new-job-modal" class="modal-overlay hidden">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>新建作业</h3>
+                <button id="close-modal-btn" class="btn btn-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="new-job-form">
+                    <div class="form-group">
+                        <label for="job-name-input">作业名称:</label>
+                        <input type="text" id="job-name-input" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="job-template-select">模板:</label>
+                        <select id="job-template-select" required>
+                            <option value="">选择模板...</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="job-cluster-select">集群:</label>
+                        <select id="job-cluster-select" required>
+                            <option value="">选择集群...</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="job-script-input">脚本内容:</label>
+                        <textarea id="job-script-input" rows="15" required></textarea>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> 创建作业
+                        </button>
+                        <button type="button" id="cancel-job-btn" class="btn">
+                            <i class="fas fa-times"></i> 取消
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Template Management Modal -->
+    <div id="template-management-modal" class="modal-overlay hidden">
+        <div class="modal large-modal">
+            <div class="modal-header">
+                <h3>模板管理</h3>
+                <button id="close-template-modal-btn" class="btn btn-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="template-management-toolbar">
+                    <button id="add-template-btn" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> 添加模板
+                    </button>
+                    <div class="template-search">
+                        <input type="text" id="template-search" placeholder="搜索模板...">
+                    </div>
+                </div>
+                
+                <div id="template-management-list" class="template-management-list">
+                    <!-- Templates will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- New/Edit Template Modal -->
+    <div id="template-form-modal" class="modal-overlay hidden">
+        <div class="modal large-modal">
+            <div class="modal-header">
+                <h3 id="template-form-title">新建模板</h3>
+                <button id="close-template-form-btn" class="btn btn-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="template-form">
+                    <input type="hidden" id="template-id-input">
+                    
+                    <div class="form-group">
+                        <label for="template-name-input">模板名称:</label>
+                        <input type="text" id="template-name-input" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="template-description-input">描述:</label>
+                        <input type="text" id="template-description-input">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="template-category-input">分类:</label>
+                        <select id="template-category-input">
+                            <option value="Basic">基础</option>
+                            <option value="Parallel">并行</option>
+                            <option value="GPU">GPU</option>
+                            <option value="Custom">自定义</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="template-script-input">脚本内容:</label>
+                        <textarea id="template-script-input" rows="20" required></textarea>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> 保存模板
+                        </button>
+                        <button type="button" id="cancel-template-btn" class="btn">
+                            <i class="fas fa-times"></i> 取消
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/jobs.js"></script>
+    <script>
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            const jobManager = new JobManager();
+            jobManager.init();
+        });
+    </script>
+</body>
+</html>
