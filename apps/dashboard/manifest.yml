@@ -1,9 +1,10 @@
 ---
-name: Dashboard
+name: 仪表板
 description: |-
-  The MiniDemand Main Dashboard
-category: System
+  MiniDemand 统一管理控制台
+category: 系统
 icon: fa://tachometer-alt
 role: dashboard
 url: dashboard
 new_window: false
+id: dashboard

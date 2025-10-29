@@ -9,7 +9,7 @@ const vncManager = require('./vnc-manager');
 
 const app = express();
 const PORT = process.env.PORT || 3004;
-const HOST = process.env.HOST || 'localhost';
+const HOST = process.env.HOST || '0.0.0.0';  // Listen on all interfaces (IPv4 + IPv6)
 const USE_REAL_VNC = process.env.USE_REAL_VNC === 'true' || false;
 
 // Middleware
@@ -147,7 +147,7 @@ app.get('/', (req, res) => {
 app.get('/api/status', (req, res) => {
   res.json({
     status: 'running',
-    title: 'MiniDemand Interactive Desktop',
+    title: 'MiniDemand 交互式桌面',
     version: '1.0.0',
     uptime: process.uptime()
   });

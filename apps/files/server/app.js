@@ -7,7 +7,7 @@ const os = require('os');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
-const HOST = process.env.HOST || 'localhost';
+const HOST = process.env.HOST || '0.0.0.0';  // Listen on all interfaces (IPv4 + IPv6)
 
 // Middleware
 app.use(helmet({
@@ -35,7 +35,7 @@ app.get('/', (req, res) => {
 app.get('/api/status', (req, res) => {
   res.json({
     status: 'running',
-    title: 'MiniDemand Files',
+    title: 'MiniDemand 文件管理',
     version: '1.0.0',
     uptime: process.uptime()
   });

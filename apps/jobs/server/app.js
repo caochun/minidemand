@@ -9,7 +9,7 @@ const { promisify } = require('util');
 
 const app = express();
 const PORT = process.env.PORT || 3003;
-const HOST = process.env.HOST || 'localhost';
+const HOST = process.env.HOST || '0.0.0.0';  // Listen on all interfaces (IPv4 + IPv6)
 const execAsync = promisify(exec);
 
 // Middleware
@@ -152,7 +152,7 @@ app.get('/', (req, res) => {
 app.get('/api/status', (req, res) => {
   res.json({
     status: 'running',
-    title: 'MiniDemand Job Composer',
+    title: 'MiniDemand 任务管理',
     version: '1.0.0',
     uptime: process.uptime()
   });

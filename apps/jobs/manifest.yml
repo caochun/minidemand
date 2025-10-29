@@ -1,8 +1,8 @@
 ---
-name: Job Composer
+name: 任务管理
 description: |-
-  The MiniDemand HPC Job Management System
-category: Jobs
+  HPC 作业提交、监控和管理系统
+category: 作业
 icon: fa://magic
 role: jobs
 url: jobs

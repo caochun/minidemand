@@ -1,9 +1,10 @@
 ---
-name: Files App
+name: 文件管理
 description: |-
-  The MiniDemand File Manager
-category: Files
+  在线文件浏览、上传、下载和编辑
+category: 文件
 icon: fa://folder
 role: files
 url: files
 new_window: false
+id: files

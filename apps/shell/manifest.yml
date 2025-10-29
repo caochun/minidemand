@@ -1,9 +1,10 @@
 ---
-name: Shell App
+name: Web 终端
 description: |-
-  The MiniDemand Web Terminal
-category: Terminal
+  基于浏览器的命令行终端
+category: 终端
 icon: fa://terminal
 role: shell
 url: shell
 new_window: false
+id: shell

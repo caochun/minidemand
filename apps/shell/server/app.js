@@ -17,7 +17,7 @@ const wss = new WebSocket.Server({ noServer: true });
 
 // Configuration
 const PORT = process.env.PORT || 3000;
-const HOST = process.env.HOST || 'localhost';
+const HOST = process.env.HOST || '0.0.0.0';  // Listen on all interfaces (IPv4 + IPv6)
 const TERM_NAME = process.env.TERM_NAME || 'xterm-16color';
 const INACTIVE_TIMEOUT = parseInt(process.env.INACTIVE_TIMEOUT_MS) || 300000;
 const MAX_DURATION = parseInt(process.env.MAX_DURATION_MS) || 3600000;
@@ -25,7 +25,7 @@ const PING_PONG_ENABLED = process.env.PING_PONG_ENABLED === 'true';
 const SSH_WRAPPER = process.env.SSH_WRAPPER || '/usr/bin/ssh';
 const SSH_HOST = process.env.SSH_HOST || 'localhost';
 const SSH_USER = process.env.SSH_USER || os.userInfo().username;
-const SITE_TITLE = process.env.SITE_TITLE || 'MiniDemand Terminal';
+const SITE_TITLE = process.env.SITE_TITLE || 'MiniDemand Web 终端';
 
 // Middleware
 app.use(helmet({

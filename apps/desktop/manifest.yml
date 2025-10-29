@@ -1,9 +1,9 @@
 ---
-name: Interactive Desktop
+name: 交互式桌面
 description: |-
-  Launch an interactive desktop environment with VNC support
-category: Interactive Apps
-subcategory: Desktops
+  通过浏览器访问远程图形化桌面环境
+category: 交互应用
+subcategory: 桌面
 icon: fa://desktop
 role: desktop
 url: desktop
