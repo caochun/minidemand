@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VNC Desktop - MiniDemand</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #2c3e50;
+      color: white;
+      overflow: hidden;
+    }
+
+    #toolbar {
+      background: #34495e;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+
+    #toolbar h1 {
+      font-size: 1.2rem;
+      font-weight: normal;
+    }
+
+    #toolbar .controls {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    #toolbar button {
+      padding: 8px 16px;
+      background: #3498db;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.3s;
+    }
+
+    #toolbar button:hover {
+      background: #2980b9;
+    }
+
+    #toolbar button.danger {
+      background: #e74c3c;
+    }
+
+    #toolbar button.danger:hover {
+      background: #c0392b;
+    }
+
+    #status {
+      padding: 10px 20px;
+      background: #2980b9;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    #status.error {
+      background: #e74c3c;
+    }
+
+    #status.success {
+      background: #27ae60;
+    }
+
+    #vncContainer {
+      position: fixed;
+      top: 90px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #000;
+    }
+
+    #vncFrame {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    #loadingOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.9);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    #loadingOverlay.hidden {
+      display: none;
+    }
+
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(255,255,255,0.3);
+      border-top-color: #3498db;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    #loadingText {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+
+    #loadingDetails {
+      font-size: 0.9rem;
+      color: #95a5a6;
+    }
+  </style>
+</head>
+<body>
+  <!-- Toolbar -->
+  <div id="toolbar">
+    <h1>🖥️ Interactive Desktop - <span id="sessionId">Loading...</span></h1>
+    <div class="controls">
+      <button id="fullscreenBtn">🔲 全屏</button>
+      <button id="refreshBtn">🔄 刷新</button>
+      <button id="disconnectBtn" class="danger">❌ 断开</button>
+    </div>
+  </div>
+
+  <!-- Status Bar -->
+  <div id="status">正在连接...</div>
+
+  <!-- Loading Overlay -->
+  <div id="loadingOverlay">
+    <div class="spinner"></div>
+    <div id="loadingText">正在连接到桌面...</div>
+    <div id="loadingDetails">请稍候</div>
+  </div>
+
+  <!-- VNC Container -->
+  <div id="vncContainer">
+    <iframe id="vncFrame"></iframe>
+  </div>
+
+  <script>
+    // Get session ID from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const sessionId = urlParams.get('session');
+    const apiBase = '';
+
+    // Update UI
+    document.getElementById('sessionId').textContent = sessionId ? sessionId.substring(0, 8) : 'Unknown';
+
+    // Check if noVNC is available
+    async function checkNoVNC() {
+      try {
+        const response = await fetch('/noVNC/vnc.html');
+        return response.ok;
+      } catch {
+        return false;
+      }
+    }
+
+    // Load session info and connect
+    async function connectToSession() {
+      if (!sessionId) {
+        showError('会话 ID 无效');
+        return;
+      }
+
+      try {
+        // Get session info
+        const response = await fetch(`${apiBase}/api/sessions/${sessionId}`);
+        if (!response.ok) {
+          throw new Error('无法获取会话信息');
+        }
+
+        const session = await response.json();
+
+        if (session.status !== 'running') {
+          throw new Error(`会话状态: ${session.status}`);
+        }
+
+        // Check if using real VNC
+        if (!session.realVNC) {
+          showError('此会话未启用真实 VNC 连接。请在环境变量中设置 USE_REAL_VNC=true 启动服务器。');
+          return;
+        }
+
+        // Check if noVNC is available
+        const hasNoVNC = await checkNoVNC();
+        if (!hasNoVNC) {
+          showError('noVNC 客户端未安装。请运行: npm run install-novnc');
+          return;
+        }
+
+        // Get VNC connection info
+        const vncResponse = await fetch(`${apiBase}/api/sessions/${sessionId}/vnc`);
+        if (!vncResponse.ok) {
+          throw new Error('无法获取 VNC 连接信息');
+        }
+
+        const vnc = await vncResponse.json();
+
+        // Build noVNC URL
+        const noVNCUrl = new URL('/noVNC/vnc.html', window.location.origin);
+        noVNCUrl.searchParams.set('host', window.location.hostname);
+        noVNCUrl.searchParams.set('port', vnc.port);
+        noVNCUrl.searchParams.set('password', vnc.password);
+        noVNCUrl.searchParams.set('autoconnect', 'true');
+        noVNCUrl.searchParams.set('resize', 'remote');
+
+        // Load noVNC in iframe
+        document.getElementById('vncFrame').src = noVNCUrl.toString();
+
+        // Hide loading overlay after a delay
+        setTimeout(() => {
+          document.getElementById('loadingOverlay').classList.add('hidden');
+          showSuccess('已连接到桌面');
+        }, 2000);
+
+      } catch (error) {
+        console.error('Connection error:', error);
+        showError(error.message);
+      }
+    }
+
+    // Show status
+    function showError(message) {
+      const status = document.getElementById('status');
+      const loadingText = document.getElementById('loadingText');
+      const loadingDetails = document.getElementById('loadingDetails');
+      
+      status.textContent = '❌ ' + message;
+      status.className = 'error';
+      
+      loadingText.textContent = '连接失败';
+      loadingDetails.textContent = message;
+    }
+
+    function showSuccess(message) {
+      const status = document.getElementById('status');
+      status.textContent = '✓ ' + message;
+      status.className = 'success';
+    }
+
+    // Button handlers
+    document.getElementById('fullscreenBtn').addEventListener('click', () => {
+      const container = document.getElementById('vncContainer');
+      if (container.requestFullscreen) {
+        container.requestFullscreen();
+      }
+    });
+
+    document.getElementById('refreshBtn').addEventListener('click', () => {
+      const frame = document.getElementById('vncFrame');
+      frame.src = frame.src;
+    });
+
+    document.getElementById('disconnectBtn').addEventListener('click', () => {
+      if (confirm('确定要断开连接吗？')) {
+        window.close();
+        // If window.close() doesn't work, redirect back
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 100);
+      }
+    });
+
+    // Start connection
+    connectToSession();
+  </script>
+</body>
+</html>
+

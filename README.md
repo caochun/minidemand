@@ -28,6 +28,17 @@
 - 实时任务状态更新
 - 任务历史记录
 
+### 🖥️ 交互式桌面 (Desktop App)
+- 通过浏览器访问远程图形化桌面
+- 支持多种桌面环境：
+  - MATE Desktop
+  - Xfce Desktop
+  - GNOME Desktop
+  - KDE Plasma
+- 会话管理（创建、监控、停止）
+- 资源配置（分辨率、CPU、内存）
+- VNC 连接支持
+
 ### 🏠 统一仪表板 (Dashboard)
 - 应用统一管理界面
 - 动态应用发现
@@ -45,6 +56,7 @@ minidemand/
 │   │   └── manifest.yml    # 应用配置
 │   ├── files/              # 文件管理应用
 │   ├── jobs/               # HPC 任务管理应用
+│   ├── desktop/            # 交互式桌面应用
 │   └── dashboard/          # 统一仪表板
 ├── shared/                 # 共享工具
 ├── config/                 # 配置文件
@@ -76,6 +88,7 @@ npm install
 cd apps/shell && npm install
 cd ../files && npm install
 cd ../jobs && npm install
+cd ../desktop && npm install
 cd ../dashboard && npm install
 ```
 
@@ -97,6 +110,9 @@ cd apps/files && npm start
 # 启动 Jobs 应用 (端口 3003)
 cd apps/jobs && npm start
 
+# 启动 Desktop 应用 (端口 3004)
+cd apps/desktop && npm start
+
 # 启动 Dashboard 应用 (端口 3002)
 cd apps/dashboard && npm start
 ```
@@ -107,6 +123,7 @@ cd apps/dashboard && npm start
 - **Shell**: http://localhost:3000
 - **Files**: http://localhost:3001
 - **Jobs**: http://localhost:3003
+- **Desktop**: http://localhost:3004
 
 ## 配置说明
 
@@ -133,6 +150,7 @@ id: 应用唯一标识
 - Files: 3001
 - Dashboard: 3002
 - Jobs: 3003
+- Desktop: 3004
 
 ## 开发指南
 
@@ -237,6 +255,14 @@ MIT License
 - [node-pty](https://github.com/microsoft/node-pty) - 伪终端支持
 
 ## 更新日志
+
+### v2.1.0 (2025-01-29)
+- 🎉 添加交互式桌面应用（Desktop App）
+- ✨ 支持 MATE、Xfce、GNOME、KDE 四种桌面环境
+- ✨ 完整的桌面会话管理功能
+- ✨ 资源配置和 VNC 连接支持
+- 📝 完善的文档和启动脚本
+- 🎨 现代化响应式 UI 设计
 
 ### v2.0.0 (2025-01-28)
 - 🎉 重构为模块化架构

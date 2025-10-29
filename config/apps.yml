@@ -22,6 +22,22 @@ apps:
     icon: "fa://tachometer-alt"
     port: 3002
     enabled: true
+    
+  jobs:
+    name: "Job Composer"
+    description: "HPC Job Management"
+    category: "Jobs"
+    icon: "fa://magic"
+    port: 3003
+    enabled: true
+    
+  desktop:
+    name: "Interactive Desktop"
+    description: "Launch interactive desktop environments"
+    category: "Interactive Apps"
+    icon: "fa://desktop"
+    port: 3004
+    enabled: true
 
 settings:
   default_app: "dashboard"

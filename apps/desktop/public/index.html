@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Desktop - MiniDemand</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1><i class="fas fa-desktop"></i> Interactive Desktop</h1>
+      <p class="subtitle">启动交互式图形化桌面环境</p>
+    </header>
+
+    <main>
+      <!-- Session Creation Form -->
+      <section id="createSection" class="section">
+        <h2><i class="fas fa-plus-circle"></i> 创建新会话</h2>
+        <form id="sessionForm">
+          <div class="form-group">
+            <label for="desktop">
+              <i class="fas fa-desktop"></i> 桌面环境
+            </label>
+            <select id="desktop" name="desktop" required>
+              <option value="">-- 选择桌面环境 --</option>
+            </select>
+            <small class="form-help">选择您想要启动的桌面环境类型</small>
+          </div>
+
+          <div class="form-group">
+            <label for="resolution">
+              <i class="fas fa-tv"></i> 分辨率
+            </label>
+            <select id="resolution" name="resolution" required>
+              <option value="1920x1080">1920x1080 (Full HD)</option>
+              <option value="1680x1050">1680x1050</option>
+              <option value="1600x900">1600x900</option>
+              <option value="1440x900">1440x900</option>
+              <option value="1366x768">1366x768</option>
+              <option value="1280x1024">1280x1024</option>
+              <option value="1280x720">1280x720 (HD)</option>
+            </select>
+            <small class="form-help">选择桌面分辨率</small>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="duration">
+                <i class="fas fa-clock"></i> 运行时长 (小时)
+              </label>
+              <input type="number" id="duration" name="duration" min="1" max="24" value="2" required>
+              <small class="form-help">最多 24 小时</small>
+            </div>
+
+            <div class="form-group">
+              <label for="cores">
+                <i class="fas fa-microchip"></i> CPU 核心数
+              </label>
+              <input type="number" id="cores" name="cores" min="1" max="16" value="1" required>
+              <small class="form-help">1-16 个核心</small>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="memory">
+              <i class="fas fa-memory"></i> 内存 (GB)
+            </label>
+            <input type="number" id="memory" name="memory" min="1" max="64" value="2" required>
+            <small class="form-help">最多 64 GB</small>
+          </div>
+
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-play"></i> 启动桌面会话
+          </button>
+        </form>
+      </section>
+
+      <!-- Active Sessions -->
+      <section id="sessionsSection" class="section">
+        <div class="section-header">
+          <h2><i class="fas fa-list"></i> 活动会话</h2>
+          <button id="refreshBtn" class="btn btn-secondary btn-sm">
+            <i class="fas fa-sync-alt"></i> 刷新
+          </button>
+        </div>
+        
+        <div id="sessionsList" class="sessions-list">
+          <div class="empty-state">
+            <i class="fas fa-inbox"></i>
+            <p>暂无活动会话</p>
+            <small>创建新会话开始使用交互式桌面</small>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 MiniDemand Interactive Desktop. All rights reserved.</p>
+    </footer>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast"></div>
+
+  <script src="/js/desktop.js"></script>
+</body>
+</html>
+

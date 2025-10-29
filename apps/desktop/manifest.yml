@@ -1,0 +1,12 @@
+---
+name: Interactive Desktop
+description: |-
+  Launch an interactive desktop environment with VNC support
+category: Interactive Apps
+subcategory: Desktops
+icon: fa://desktop
+role: desktop
+url: desktop
+new_window: false
+id: desktop
+

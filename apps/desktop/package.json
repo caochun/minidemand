@@ -1,0 +1,32 @@
+{
+  "name": "desktop",
+  "version": "2.0.0",
+  "description": "MiniDemand Interactive Desktop Application with Real VNC Support",
+  "main": "server/app.js",
+  "scripts": {
+    "start": "node server/app.js",
+    "dev": "nodemon server/app.js",
+    "install-novnc": "node scripts/install-novnc.js"
+  },
+  "keywords": [
+    "vnc",
+    "desktop",
+    "interactive",
+    "novnc",
+    "websockify"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "uuid": "^9.0.0",
+    "ws": "^8.14.0",
+    "node-pty": "^1.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.0"
+  }
+}
+
